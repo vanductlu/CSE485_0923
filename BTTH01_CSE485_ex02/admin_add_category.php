@@ -1,3 +1,23 @@
+
+<?php 
+$ten_tloai=$_POST['ten_tloai'];
+$servername='localhost';
+$username='root';
+$password='';
+$dbname='btth01_cse485';
+$conn=new mysqli($servername,$username,$password,$dbname);
+if($conn->connect_error){
+    die("Không thể kết nối tới cơ sở dữ liệu".$conn->connect_error);
+}
+// Chuẩn bị câu lệnh SQL để chèn dữ liệu vào bảng
+$sql = "INSERT INTO theloai (ten_tloai) VALUES ('$ten_tloai')";
+if ($conn->query($sql) === TRUE) {
+    echo "Data added successfully";
+    
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,14 +72,16 @@
             <div class="header">
                 <h2>thêm mới thể loại</h2>
             </div>
+            <form action="admin_add_category.php" method="post">
             <div class="input-group mb-3">
                 <span class="input-group-text" id="inputGroup-sizing-default">Tên thể loại</span>
-                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                <input type="text" id="ten_tloai" name="ten_tloai" required >    
             </div>
             <div class="button_game">
-                <button type="button" class="btn btn-success">Thêm</button>
-                <button type="button" class="btn btn-warning">Quay lại</button>
+                <button class="btn1 btn btn-success" type="submit">Thêm</button>
+                <a href="admin_category.php"><button class="btn btn-success" type="submit">Quay lại</button></a>
             </div>
+            </form>
         </div>
     </main>
     <?php include 'footer.php'; ?>

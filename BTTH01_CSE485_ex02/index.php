@@ -59,8 +59,10 @@
         <div class="card">
           <!-- <img src="image1.jpg" class="card-img-top" alt="Image 1"> -->
           <div class="card-body">
+            <a href="detail.php">
             <h5 class="card-title"><img src="./img/music1.jpg" alt="Image 1"></h5>
             <p class="card-text">Cây, lá và gió</p>
+            </a>
           </div>
         </div>
       </div>

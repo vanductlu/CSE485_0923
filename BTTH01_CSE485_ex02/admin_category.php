@@ -1,3 +1,18 @@
+<?php
+$servername='localhost';
+$username='root';
+$password='';
+$dbname='btth01_cse485';
+$conn=new mysqli($servername,$username,$password,$dbname);
+if ($conn->connect_error){
+    die ('cant connect'.$conn->connect_error);
+}
+$sql='SELECT * FROM theloai';
+$result=$conn->query($sql);
+$conn->close();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,20 +49,19 @@
                     <th scope="col-md-3">Xóa</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Nhạc trữ tình</td>
-                    <td><i class="bi bi-pencil-square"></i></td>
-                    <td><i class="bi bi-trash"></i></td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Nhà cách mạng</td>
-                    <td><i class="bi bi-pencil-square"></i></td>
-                    <td><i class="bi bi-trash"></i></td>
-                </tr>
-            </tbody>
+            <?php
+                if($result->num_rows>0){
+                    while($row=$result->fetch_assoc()){ ?>
+                        <tr>                     
+                        <td><?= $row["ma_tloai"] ?></td>
+                        <td><?= $row["ten_tloai"]?></td>
+                        <td><a href="edit_category.php"><i class="bi bi-pencil-square"></i></a></td>
+                        <td><a href=""><i class="bi bi-trash"></i></a></td>
+                        </tr>
+
+                <?php    }
+                }
+                ?> 
         </table>
     </div>
     

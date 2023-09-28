@@ -28,10 +28,10 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link active" href="index.php">Trang Chủ</a>
+            <a class="nav-link" href="index.php">Trang Chủ</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="login.php">Đăng Nhập</a>
+            <a class="nav-link active" href="login.php">Đăng Nhập</a>
           </li>
         </ul>
         <form class="form-inline">

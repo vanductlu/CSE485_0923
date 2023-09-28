@@ -1,3 +1,27 @@
+<?php
+$servername = 'localhost';
+$username = 'root';
+$password = '';
+$dbname = 'btth01_cse485';
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die('Không thể kết nối tới cơ sở dữ liệu: ' . $conn->connect_error);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $ma_tloai = $_POST['ma_tloai'];
+    $ten_tloai = $_POST['ten_tloai'];
+
+    $sql = "UPDATE theloai SET ten_tloai = '$ten_tloai' WHERE ma_tloai = '$ma_tloai'";
+
+    if ($conn->query($sql) === TRUE) {
+        echo 'Cập nhật thông tin thành công';
+    } else {
+        echo 'Lỗi: ' . $sql . '<br>' . $conn->error;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,18 +76,20 @@
             <div class="header">
                 <h2>sửa thông tin thể loại</h2>
             </div>
+            <form action="admin_edit_category.php" method="post">
             <div class="input-group mb-3">
                 <span class="input-group-text" id="inputGroup-sizing-default">Mã thể loại</span>
-                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                <input type="text" id="ma_tloai" name="ma_tloai" required>
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="inputGroup-sizing-default">Tên thể loại</span>
-                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                <input type="text" id="ten_tloai" name="ten_tloai" required>
             </div>
             <div class="button_game">
-                <button type="button" class="btn btn-success">Lưu lại</button>
-                <button type="button" class="btn btn-warning">Quay lại</button>
+            <button class="btn btn-success" type="submit">Lưu Lại</button>
+                <a href="admin_category.php"><button class="btn btn-success" type="submit">Quay lại</button></a>
             </div>
+            </form>
         </div>
     </main>
     <?php include 'footer.php'; ?>
