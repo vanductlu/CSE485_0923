@@ -1,28 +1,37 @@
 <?php
-if (isset($_GET['delete_id'])) {
-    $deleteId = $_GET['delete_id'];
-$servername='localhost';
-$username='root';
-$password='';
-$dbname='btth01_cse485';
-$conn=new mysqli($servername,$username,$password,$dbname);
-if ($conn->connect_error){
-    die ('cant connect'.$conn->connect_error);
-}
-$sql = "DELETE FROM theloai WHERE ma_tloai = '$deleteId'";
+$servername = 'localhost';
+$username = 'root';
+$password = '';
+$dbname = 'btth01_cse485';
 
-    if ($conn->query($sql) === TRUE) {
-        echo "<script>window.location.href = 'admin_category.php';</script>";
-    } else {
-        echo 'Lỗi: ' . $sql . '<br>' . $conn->error;
-    }
-$result=$conn->query($sql);
-$conn->close();
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die('Không thể kết nối đến cơ sở dữ liệu: ' . $e->getMessage());
 }
+
+if (isset($_GET["delete_id"])) {
+    $id = $_GET["delete_id"];
+
+    $sql = "DELETE FROM theloai WHERE ma_tloai = :id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    if ($stmt->execute()) {
+        echo "<script>window.location.href = 'admin_delete_category.php';</script>";
+    } else {
+        echo "Lỗi: " . $stmt->errorInfo()[2];
+    }
+}
+
+$sql = "SELECT * FROM theloai";
+$result = $conn->query($sql);
+$conn = null;
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,15 +44,16 @@ $conn->close();
             flex-direction: column;
             align-items: flex-start;
         }
-        td i
-        {
-            color:rgb(95, 150, 215);
+
+        td i {
+            color: rgb(95, 150, 215);
         }
     </style>
 </head>
+
 <body>
     <?php include 'header_admin_category.php'; ?>
-    
+
     <div class="container">
         <div class="mb-3">
             <button type="button" class="btn btn-success">Thêm mới</button>
@@ -58,17 +68,17 @@ $conn->close();
                 </tr>
             </thead>
             <?php
-                if($result->num_rows>0){
-                    while($row=$result->fetch_assoc()){ ?>
-                        <tr>                     
+            if ($result->rowCount() > 0) {
+                while ($row = $result->fetch(PDO::FETCH_ASSOC)) { ?>
+                    <tr>
                         <td><?= $row["ma_tloai"] ?></td>
-                        <td><?= $row["ten_tloai"]?></td>
-                        <td><a href="edit_category.php"><i class="bi bi-pencil-square"></i></a></td>
-                        <td><a href="admin_category?delete_id='<?=$row["ma_tloai"] ?>'" onclick="return confirmDelete()"><i class="bi bi-trash"></i></a></td>
-                        </tr>
-                <?php    }
-                }
-                ?> 
+                        <td><?= $row["ten_tloai"] ?></td>
+                        <td><a href="admin_edit_category.php?edit_id=<?= $row["ma_tloai"] ?>"><i class="bi bi-pencil-square"></i></a></td>
+                        <td><a href="admin_category.php?delete_id=<?= $row["ma_tloai"] ?>" onclick="return confirmDelete()"><i class="bi bi-trash"></i></a></td>
+                    </tr>
+            <?php }
+            }
+            ?>
         </table>
     </div>
     <script>
@@ -78,4 +88,5 @@ $conn->close();
     </script>
     <?php include 'footer.php'; ?>
 </body>
+
 </html>

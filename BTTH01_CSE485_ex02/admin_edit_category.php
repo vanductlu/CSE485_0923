@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sql = "UPDATE theloai SET ten_tloai = '$ten_tloai' WHERE ma_tloai = '$ma_tloai'";
 
     if ($conn->query($sql) === TRUE) {
-        echo "<script>window.location.href = 'admin_edit_category.php';</script>";
+        echo "<script>window.location.href = 'admin_category.php';</script>";
     } else {
         echo 'Lỗi: ' . $sql . '<br>' . $conn->error;
     }

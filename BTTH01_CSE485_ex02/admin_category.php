@@ -44,7 +44,7 @@ $conn->close();
         <table class="table text-center">
             <thead>
                 <tr>
-                    <th scope="col-md-1">id</th>
+                    <th scope="col-md-1">#</th>
                     <th scope="col-md-1">Thêm thể loại</th>
                     <th scope="col-md-3">Sửa</th>
                     <th scope="col-md-3">Xóa</th>
