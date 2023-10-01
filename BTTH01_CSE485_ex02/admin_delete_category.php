@@ -1,4 +1,6 @@
 <?php
+if (isset($_GET['delete_id'])) {
+    $deleteId = $_GET['delete_id'];
 $servername='localhost';
 $username='root';
 $password='';
@@ -7,10 +9,16 @@ $conn=new mysqli($servername,$username,$password,$dbname);
 if ($conn->connect_error){
     die ('cant connect'.$conn->connect_error);
 }
-$sql='SELECT * FROM theloai';
+$sql = "DELETE FROM theloai WHERE ma_tloai = '$deleteId'";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "<script>window.location.href = 'admin_category.php';</script>";
+    } else {
+        echo 'Lỗi: ' . $sql . '<br>' . $conn->error;
+    }
 $result=$conn->query($sql);
 $conn->close();
-
+}
 ?>
 
 <!DOCTYPE html>
@@ -38,13 +46,12 @@ $conn->close();
     
     <div class="container">
         <div class="mb-3">
-            <a href="admin_add_category.php"><button type="button" class="btn btn-success">Thêm mới</button>
-</a>
-            </div>
+            <button type="button" class="btn btn-success">Thêm mới</button>
+        </div>
         <table class="table text-center">
             <thead>
                 <tr>
-                    <th scope="col-md-1">id</th>
+                    <th scope="col-md-1">#</th>
                     <th scope="col-md-1">Thêm thể loại</th>
                     <th scope="col-md-3">Sửa</th>
                     <th scope="col-md-3">Xóa</th>
@@ -56,16 +63,19 @@ $conn->close();
                         <tr>                     
                         <td><?= $row["ma_tloai"] ?></td>
                         <td><?= $row["ten_tloai"]?></td>
-                        <td><a href="admin_edit_category.php"><i class="bi bi-pencil-square"></i></a></td>
-                        <td><a href="admin_delete_category.php"><i class="bi bi-trash"></i></a></td>
+                        <td><a href="edit_category.php"><i class="bi bi-pencil-square"></i></a></td>
+                        <td><a href="admin_category?delete_id='<?=$row["ma_tloai"] ?>'" onclick="return confirmDelete()"><i class="bi bi-trash"></i></a></td>
                         </tr>
-
                 <?php    }
                 }
                 ?> 
         </table>
     </div>
-    
+    <script>
+        function confirmDelete() {
+            return confirm("Bạn có chắc chắn muốn xóa thể loại này?");
+        }
+    </script>
     <?php include 'footer.php'; ?>
 </body>
 </html>

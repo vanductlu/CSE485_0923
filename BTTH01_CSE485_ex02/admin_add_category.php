@@ -1,21 +1,32 @@
 
-<?php 
-$ten_tloai=$_POST['ten_tloai'];
-$servername='localhost';
-$username='root';
-$password='';
-$dbname='btth01_cse485';
-$conn=new mysqli($servername,$username,$password,$dbname);
-if($conn->connect_error){
-    die("Không thể kết nối tới cơ sở dữ liệu".$conn->connect_error);
-}
-// Chuẩn bị câu lệnh SQL để chèn dữ liệu vào bảng
-$sql = "INSERT INTO theloai (ten_tloai) VALUES ('$ten_tloai')";
-if ($conn->query($sql) === TRUE) {
-    echo "Data added successfully";
-    
-} else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+<?php
+session_start();
+
+if (isset($_POST['ten_tloai'])) {
+    if (!isset($_SESSION['added_category'])) {
+        $ten_tloai = $_POST['ten_tloai'];
+
+        $servername = 'localhost';
+        $username = 'root';
+        $password = '';
+        $dbname = 'btth01_cse485';
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        if ($conn->connect_error) {
+            die("Không thể kết nối tới cơ sở dữ liệu" . $conn->connect_error);
+        }
+
+        // Chuẩn bị câu lệnh SQL để chèn dữ liệu vào bảng
+        $sql = "INSERT INTO theloai (ten_tloai) VALUES ('$ten_tloai')";
+        if ($conn->query($sql) === TRUE) {
+            $_SESSION['added_category'] = true;
+            echo "<script>window.location.href = 'admin_add_category.php';</script>";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    }
+    else {
+        echo "Dữ liệu đã được thêm. Vui lòng không tải lại trang.";
+    }
 }
 ?>
 <!DOCTYPE html>
